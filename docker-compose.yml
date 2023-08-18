@@ -1,0 +1,46 @@
+version: '3'
+services:
+  frontend:
+   build:
+    context: client
+    dockerfile: Dockerfile
+   depends_on:
+     - backend  
+   stdin_open: true
+   ports:
+       - 3000:3000
+   networks:
+      yolo-network:
+        ipv4_address: 172.18.0.5
+  backend:
+   build:
+    context: backend
+    dockerfile: Dockerfile
+   environment:
+    MONGODB_URI: 'mongodb://gloria:gloria@172.18.0.2:27017'
+    PORT: 5000
+   ports:
+     - 5000:5000
+   depends_on:
+     - mongo 
+   networks:
+      yolo-network:
+        ipv4_address: 172.18.0.3
+  mongo:
+   image: mongo
+   environment:
+     MONGO_INITDB_ROOT_USERNAME: gloria
+     MONGO_INITDB_ROOT_PASSWORD: gloria
+   ports:
+     - 27017:27017
+   networks:
+      yolo-network:
+        ipv4_address: 172.18.0.2  
+networks:
+  yolo-network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/16
+
+
