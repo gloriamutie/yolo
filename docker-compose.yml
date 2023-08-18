@@ -1,9 +1,7 @@
 version: '3'
 services:
   frontend:
-   build:
-    context: client
-    dockerfile: Dockerfile
+   image: 'gloriamutie/yolo-frontend:1.0.1'
    depends_on:
      - backend  
    stdin_open: true
@@ -13,9 +11,7 @@ services:
       yolo-network:
         ipv4_address: 172.18.0.5
   backend:
-   build:
-    context: backend
-    dockerfile: Dockerfile
+   image: 'gloriamutie/yolo-backend:1.0.0'
    environment:
     MONGODB_URI: 'mongodb://gloria:gloria@172.18.0.2:27017'
     PORT: 5000
